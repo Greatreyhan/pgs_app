@@ -1,17 +1,16 @@
 import React from 'react'
 import { Image, ScrollView, Text, View } from 'react-native'
 import { Link } from "react-router-native"
-import { Check, Rainy, Map, Gear } from '../assets'
+import { CheckIcon, Rainy, Map, Gear } from '../assets'
 import { styled } from 'nativewind'
 
 const StyledView = styled(View);
-const StyledScrollView = styled(ScrollView);
 const StyledLink = styled(Link);
 const StyledText = styled(Text);
 const StyledImage = styled(Image);
 const Home = () => {
     return (
-        <StyledScrollView className='bg-slate-100 h-screen'>
+        <StyledView className='bg-slate-100 pb-8'>
 
             {/* Header */}
             <StyledView className='w-full flex flex-row justify-center items-between'>
@@ -84,7 +83,7 @@ const Home = () => {
 
                     <StyledView className='w-full flex flex-row justify-center items-center mt-3 px-5 py-3 rounded-xl bg-white'>
                         <StyledView className='w-5 h-5 rounded border-2 border-teal-900 bg-teal-900 mx-4 ml-8 flex justify-center items-center'>
-                            <StyledImage className='w-3 h-3' source={Check} />
+                            <StyledImage className='w-3 h-3' source={CheckIcon} />
                         </StyledView>
                         <StyledView className='w-full flex flex-col'>
                             <StyledText className='flex-1 text-slate-700 font-bold text-md line-through opacity-50'>Flush Kran Air</StyledText>
@@ -92,10 +91,10 @@ const Home = () => {
                         </StyledView>
                     </StyledView>
                 </StyledView>
-                <StyledLink className="mt-4 mx-auto bg-teal-800 px-6 py-2 rounded-md shadow" to="/note"><StyledText className='text-white'>Tampilkan Semua</StyledText></StyledLink>
+                <StyledLink className="mt-4 mx-auto bg-teal-800 hover:bg-teal-900 px-6 py-2 rounded-md shadow-lg" to="/check"><StyledText className='text-white'>Tampilkan Semua</StyledText></StyledLink>
             </StyledView>
 
-        </StyledScrollView>
+        </StyledView>
     )
 }
 

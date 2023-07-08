@@ -3,5 +3,6 @@ import History from "./history";
 import Profile from "./profile";
 import Setting from "./setting";
 import Splash from "./splash";
-
-export {Home, History, Profile, Setting, Splash}
+import Navigation from "./navigation";
+import Check from "./check";
+export {Home, History, Profile, Setting, Splash, Navigation, Check}
