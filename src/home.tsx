@@ -1,14 +1,82 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import { Image, ScrollView, Text, View } from 'react-native'
 import { Link } from "react-router-native"
 import { CheckIcon, Rainy, Map, Gear } from '../assets'
 import { styled } from 'nativewind'
+import { db } from "./config";
+import { onValue, ref } from "firebase/database";
 
 const StyledView = styled(View);
 const StyledLink = styled(Link);
 const StyledText = styled(Text);
 const StyledImage = styled(Image);
 const Home = () => {
+    const [tempAvg, setTempAvg] = useState(0);
+    const [udaraAvg, setUdaraAvg] = useState(0);
+    const [tanahAvg, setTanahAvg] = useState(0);
+    const [ppmAvg, setPpmAvg] = useState(0);
+    const [tempL, setTempL] = useState(0);
+    const [tempH, setTempH] = useState(0);
+    useEffect(() => {
+        // Suhu
+        const querySuhu = ref(db, "temp");
+        onValue(querySuhu, (snapshot) => {
+          const data = snapshot.val();
+    
+          if (snapshot.exists()) {
+            setTempAvg(data);
+          }
+        });
+
+        // Udara
+        const queryUdara = ref(db, "udara");
+        onValue(queryUdara, (snapshot) => {
+          const data = snapshot.val();
+    
+          if (snapshot.exists()) {
+            setUdaraAvg(data);
+          }
+        });
+
+        // Tanah
+        const queryTanah = ref(db, "tanah");
+        onValue(queryTanah, (snapshot) => {
+          const data = snapshot.val();
+    
+          if (snapshot.exists()) {
+            setTanahAvg(data);
+          }
+        });
+
+        // PPM
+        const queryPPM = ref(db, "ppm");
+        onValue(queryPPM, (snapshot) => {
+          const data = snapshot.val();
+          if (snapshot.exists()) {
+            setPpmAvg(data);
+          }
+        });
+
+        // Temp High
+        const queryTempH = ref(db, "tempH");
+        onValue(queryTempH, (snapshot) => {
+          const data = snapshot.val();
+    
+          if (snapshot.exists()) {
+            setTempH(data);
+          }
+        });
+
+        // Temp Low
+        const queryTempL = ref(db, "tempL");
+        onValue(queryTempL, (snapshot) => {
+          const data = snapshot.val();
+    
+          if (snapshot.exists()) {
+            setTempL(data);
+          }
+        });
+      }, []);
     return (
         <StyledView className='bg-slate-100 pb-8'>
 
@@ -29,10 +97,10 @@ const Home = () => {
 
                 <StyledView className='flex flex-row justify-between items-center mt-4 px-4'>
                     <StyledView className='flex flex-row justify-between items-center'>
-                        <StyledText className='text-4xl text-slate-950 font-bold'>+17°C</StyledText>
+                        <StyledText className='text-4xl text-slate-950 font-bold'>{tempAvg}°C</StyledText>
                         <StyledView className='flex flex-col justify-center items-center ml-2'>
-                            <StyledText className='text-xs m-0.5 text-slate-800 font-light'>H: 25°C</StyledText>
-                            <StyledText className='text-xs m-0.5 text-slate-800 font-light'>L: 13°C</StyledText>
+                            <StyledText className='text-xs m-0.5 text-slate-800 font-light'>H: {tempH}°C</StyledText>
+                            <StyledText className='text-xs m-0.5 text-slate-800 font-light'>L: {tempL}°C</StyledText>
                         </StyledView>
                     </StyledView>
                     <StyledView className='flex justify-center flex-1 items-center'>
@@ -43,15 +111,15 @@ const Home = () => {
                 <StyledView className='bg-teal-900 rounded-b-lg py-2 mt-5 flex flex-row'>
                     <StyledView className='flex justify-center items-center flex-col w-4/12'>
                         <StyledText className='text-xs m-0.5 text-slate-200 font-normal mt-2 text-center'>Udara</StyledText>
-                        <StyledText className='text-lg m-0.5 text-white font-bold -mt-1'>25%</StyledText>
+                        <StyledText className='text-lg m-0.5 text-white font-bold -mt-1'>{udaraAvg}%</StyledText>
                     </StyledView>
                     <StyledView className='flex justify-center items-center flex-col w-4/12'>
                         <StyledText className='text-xs m-0.5 text-slate-200 font-normal mt-2 text-center'>Tanah</StyledText>
-                        <StyledText className='text-lg m-0.5 text-white font-bold -mt-1'>75.5%</StyledText>
+                        <StyledText className='text-lg m-0.5 text-white font-bold -mt-1'>{tanahAvg}%</StyledText>
                     </StyledView>
                     <StyledView className='flex justify-center items-center flex-col w-4/12'>
                         <StyledText className='text-xs m-0.5 text-slate-200 font-normal mt-2 text-center'>PPM</StyledText>
-                        <StyledText className='text-lg m-0.5 text-white font-bold -mt-1'>200</StyledText>
+                        <StyledText className='text-lg m-0.5 text-white font-bold -mt-1'>{ppmAvg}</StyledText>
                     </StyledView>
                 </StyledView>
 

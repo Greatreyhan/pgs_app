@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, Image, Pressable, Button} from 'react-native';
 import {Link} from 'react-router-native';
 import {styled} from 'nativewind';
@@ -10,6 +10,9 @@ import {
   PlusIcon,
   VolumeIcon,
 } from '../assets';
+import { app, db } from "./config";
+import { onValue, ref, set } from "firebase/database";
+
 const StyledView = styled(View);
 const StyledButton = styled(Button);
 const StyledLink = styled(Link);
@@ -20,6 +23,42 @@ const Setting = () => {
   const [intervalPompa, setIntervalPompa] = useState(0);
   const [intervalPupuk, setIntervalPupuk] = useState(0);
   const [levelTanah, setLevelTanah] = useState(0);
+
+  useEffect(() => {
+
+    // Interval Pompa
+    onValue(ref(db, "intervalPompa"), (snapshot) => {
+      const data = snapshot.val();
+      if (snapshot.exists()) {
+        setIntervalPompa(data);
+      }
+    });
+
+    // Interval Pupuk
+    onValue(ref(db, "intervalPupuk"), (snapshot) => {
+      const data = snapshot.val();
+      if (snapshot.exists()) {
+        setIntervalPupuk(data);
+      }
+    });
+
+    // Level Tanah
+    onValue(ref(db, "levelTanah"), (snapshot) => {
+      const data = snapshot.val();
+      if (snapshot.exists()) {
+        setLevelTanah(data);
+      }
+    });
+
+  }, []);
+
+  const handleSimpan = () =>{
+    set(ref(db,'intervalPompa'),300);
+    console.log('simpan');
+  }
+  const handleKembalikan = () =>{
+    console.log('kembalikan');
+  }
   return (
     <StyledView className="">
       {/* Header */}
@@ -110,10 +149,10 @@ const Setting = () => {
       {/* Button Save */}
       <StyledView className="flex flex-row w-11/12 mx-auto justify-between mt-10">
         <StyledPressable className="px-12 py-3 bg-teal-800 rounded-md">
-          <StyledText className="text-white font-bold">Simpan</StyledText>
+          <StyledText className="text-white font-bold" onPress={handleSimpan}>Simpan</StyledText>
         </StyledPressable>
         <StyledPressable className="px-12 py-3 rounded-md">
-          <StyledText className="text-teal-900 font-bold">Kembalikan</StyledText>
+          <StyledText className="text-teal-900 font-bold" onPress={handleKembalikan}>Kembalikan</StyledText>
         </StyledPressable>
       </StyledView>
     </StyledView>
