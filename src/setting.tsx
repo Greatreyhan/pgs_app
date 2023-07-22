@@ -53,7 +53,7 @@ const Setting = () => {
   }, []);
 
   const handleSimpan = () =>{
-    set(ref(db,'intervalPompa'),300);
+    set(ref(db,'intervalPompa'),100);
     console.log('simpan');
   }
   const handleKembalikan = () =>{
