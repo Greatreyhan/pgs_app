@@ -10,7 +10,7 @@ import {
   PlusIcon,
   VolumeIcon,
 } from '../assets';
-import { app, db } from "./config";
+import { db } from "./config";
 import { onValue, ref, set } from "firebase/database";
 
 const StyledView = styled(View);
@@ -53,11 +53,14 @@ const Setting = () => {
   }, []);
 
   const handleSimpan = () =>{
-    set(ref(db,'intervalPompa'),300);
-    console.log('simpan');
+    set(ref(db,'intervalPompa'),intervalPompa);
+    set(ref(db,'intervalPupuk'),intervalPupuk);
+    set(ref(db,'levelTanah'),levelTanah);
   }
   const handleKembalikan = () =>{
-    console.log('kembalikan');
+    set(ref(db,'intervalPompa'),300);
+    set(ref(db,'intervalPupuk'),100);
+    set(ref(db,'levelTanah'),75);
   }
   return (
     <StyledView className="">
