@@ -15,38 +15,55 @@ const StyledPressable = styled(Pressable);
 
 const History = () => {
   const [showData, setShowData] = useState(0);
-  const [dataTanah, setDataTanah] = useState(null);
-  const [dataTemperature, setDataTemperature] = useState(null);
-  const [dataKecerahan, setDataKecerahan] = useState(null);
+  const [dataTanah, setDataTanah] = useState([0,0,0,0,0,0,0,0,0,0,0,0]);
+  const [dataTemperature, setDataTemperature] = useState([0,0,0,0,0,0,0,0,0,0,0,0]);
+  const [dataKecerahan, setDataKecerahan] = useState([0,0,0,0,0,0,0,0,0,0,0,0]);
   const [synthesizedData, setSynthesizedData]: any[] = useState([]);
   useEffect(() => {
+    const desiredDate = new Date();
+    const formattedDate = desiredDate.getFullYear() + "/" + (desiredDate.getMonth() + 1) + "/" + desiredDate.getDate();
+    console.log(formattedDate);
     // Suhu
-    const querySuhu = ref(db, 'data1/temperature/2023/7/15');
+    const querySuhu = ref(db, 'data/1/temperature/'+ formattedDate);
     onValue(querySuhu, snapshot => {
-      const data = snapshot.val();
-
+      const data = snapshot.val(); 
       if (snapshot.exists()) {
-        setDataTemperature(data);
+        let newArr = [];
+        for(let i = 0; i < 24;i++){
+          if(data[`${i}`] != undefined) newArr[i] = data[`${i}`]
+          else newArr[i] = 0
+        }
+        setDataTemperature(newArr);
       }
     });
 
     // Tanah
-    const queryTanah = ref(db, 'data1/soil/2023/7/15');
+    const queryTanah = ref(db, 'data/1/soil'+formattedDate);
     onValue(queryTanah, snapshot => {
       const data = snapshot.val();
 
       if (snapshot.exists()) {
-        setDataTanah(data);
+        let newArr = [];
+        for(let i = 0; i < 24;i++){
+          if(data[`${i}`] != undefined) newArr[i] = data[`${i}`]
+          else newArr[i] = 0
+        }
+        setDataTanah(newArr);
       }
     });
 
     // Kecerahan
-    const queryKecerahan = ref(db, 'data1/soil/2023/7/15');
+    const queryKecerahan = ref(db, 'data/1/light'+formattedDate);
     onValue(queryKecerahan, snapshot => {
       const data = snapshot.val();
 
       if (snapshot.exists()) {
-        setDataKecerahan(data);
+        let newArr = [];
+        for(let i = 0; i < 24;i++){
+          if(data[`${i}`] != undefined) newArr[i] = data[`${i}`]
+          else newArr[i] = 0
+        }
+        setDataKecerahan(newArr);
       }
     });
     fetch(
@@ -165,7 +182,7 @@ const History = () => {
                 ],
                 datasets: [
                   {
-                    data: dataTemperature,
+                     data: dataTemperature,
                   },
                 ],
               }}
