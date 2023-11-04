@@ -10,7 +10,7 @@ import {
   PlusIcon,
   VolumeIcon,
 } from '../assets';
-import { db } from "./config";
+import { app, db } from "./config";
 import { onValue, ref, set } from "firebase/database";
 
 const StyledView = styled(View);
@@ -23,6 +23,12 @@ const Setting = () => {
   const [intervalPompa, setIntervalPompa] = useState(0);
   const [intervalPupuk, setIntervalPupuk] = useState(0);
   const [levelTanah, setLevelTanah] = useState(0);
+  const [pompa, setPompa] = useState(false);
+  const [valveA, setValveA] = useState(false);
+  const [valveB, setValveB] = useState(false);
+  const [valveC, setValveC] = useState(false);
+  const [valveD, setValveD] = useState(false);
+  const [valveE, setValveE] = useState(false);
 
   useEffect(() => {
 
@@ -53,14 +59,21 @@ const Setting = () => {
   }, []);
 
   const handleSimpan = () =>{
-    set(ref(db,'intervalPompa'),intervalPompa);
-    set(ref(db,'intervalPupuk'),intervalPupuk);
-    set(ref(db,'levelTanah'),levelTanah);
+    set(ref(db,'intervalPompa'),100);
+    console.log('simpan');
   }
   const handleKembalikan = () =>{
-    set(ref(db,'intervalPompa'),300);
-    set(ref(db,'intervalPupuk'),100);
-    set(ref(db,'levelTanah'),75);
+    console.log('kembalikan');
+  }
+
+  const handleControls = (id:string) =>{
+    if(id == "pompa") setPompa(!pompa);
+    if(id == "valveA") setValveA(!valveA);
+    if(id == "valveB") setValveB(!valveB);
+    if(id == "valveC") setValveC(!valveC);
+    if(id == "valveD") setValveD(!valveD);
+    if(id == "valveE") setValveE(!valveE);
+    
   }
   return (
     <StyledView className="">
@@ -149,13 +162,34 @@ const Setting = () => {
         </StyledView>
       </StyledView>
 
+      <StyledView className="flex flex-row flex-wrap w-11/12 gap-1 gap-y-2 mx-auto justify-between mt-4">
+        <StyledPressable className={`px-6 py-2 ${pompa ? 'bg-teal-800' : 'bg-slate-500'}  rounded-md`}  onPress={()=>handleControls('pompa')}>
+          <StyledText className="text-white text-xs font-bold" >Pompa</StyledText>
+        </StyledPressable>
+        <StyledPressable className={`px-6 py-2 ${valveA ? 'bg-teal-800' : 'bg-slate-500'} rounded-md`} onPress={()=>handleControls('valveA')}>
+          <StyledText className="text-white text-xs font-bold">Valve A</StyledText>
+        </StyledPressable>
+        <StyledPressable className={`px-6 py-2 ${valveB ? 'bg-teal-800' : 'bg-slate-500'} rounded-md`} onPress={()=>handleControls('valveB')}>
+          <StyledText className="text-white text-xs font-bold">Valve B</StyledText>
+        </StyledPressable>
+        <StyledPressable className={`px-6 py-2 ${valveC ? 'bg-teal-800' : 'bg-slate-500'} rounded-md`} onPress={()=>handleControls('valveC')}>
+          <StyledText className="text-white text-xs font-bold">Valve C</StyledText>
+        </StyledPressable>
+        <StyledPressable className={`px-6 py-2 ${valveD ? 'bg-teal-800' : 'bg-slate-500'} rounded-md`} onPress={()=>handleControls('valveD')}>
+          <StyledText className="text-white text-xs font-bold">Valve D</StyledText>
+        </StyledPressable>
+        <StyledPressable className={`px-6 py-2 ${valveE ? 'bg-teal-800' : 'bg-slate-500'} rounded-md`} onPress={()=>handleControls('valveE')}>
+          <StyledText className="text-white text-xs font-bold">Valve E</StyledText>
+        </StyledPressable>
+      </StyledView>
+
       {/* Button Save */}
       <StyledView className="flex flex-row w-11/12 mx-auto justify-between mt-10">
         <StyledPressable className="px-12 py-3 bg-teal-800 rounded-md">
-          <StyledText className="text-white font-bold" onPress={handleSimpan}>Simpan</StyledText>
+          <StyledText className="text-white font-bold text-sm" onPress={handleSimpan}>Simpan</StyledText>
         </StyledPressable>
         <StyledPressable className="px-12 py-3 rounded-md">
-          <StyledText className="text-teal-900 font-bold" onPress={handleKembalikan}>Kembalikan</StyledText>
+          <StyledText className="text-teal-900 font-bold text-sm" onPress={handleKembalikan}>Kembalikan</StyledText>
         </StyledPressable>
       </StyledView>
     </StyledView>
